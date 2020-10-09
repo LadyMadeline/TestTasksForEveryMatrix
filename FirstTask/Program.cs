@@ -12,51 +12,47 @@ namespace FirstTask
         {
             int newArrayLength = firstArray.Length + secondArray.Length;
             int[] newArray = new int[newArrayLength];
-
-            for (int i = 0; i < firstArray.Length || i < secondArray.Length; i++)
+            int[] longArray;
+            int[] shortArray;
+            
+            if (firstArray.Length >= secondArray.Length)
             {
-                if (i >= firstArray.Length)
-                {
-                    if (newArray[i + firstArray.Length - 1] > secondArray[i])
-                    {
-                        newArray[i + firstArray.Length] = newArray[i + firstArray.Length - 1];
-                        newArray[i + firstArray.Length - 1] = secondArray[i];
-                    }
+                longArray = firstArray;
+                shortArray = secondArray;
+            }
 
-                    else
-                    {
-                        newArray[i + firstArray.Length] = secondArray[i];
-                    }
+            else
+            {
+                longArray = secondArray;
+                shortArray = firstArray;
+            }
+
+            for (int i = 0; i < longArray.Length; i++)
+            {
+
+                if (newArray[i + shortArray.Length - 1] > longArray[i] && i >= shortArray.Length)
+                {
+                    newArray[i + shortArray.Length] = newArray[i + shortArray.Length - 1];
+                    newArray[i + shortArray.Length - 1] = longArray[i];
                 }
 
-                else if (i >= secondArray.Length)
+                else if (i >= shortArray.Length)
                 {
-                    if (newArray[i + secondArray.Length - 1] > firstArray[i])
-                    {
-                        newArray[i + secondArray.Length] = newArray[i + secondArray.Length - 1];
-                        newArray[i + secondArray.Length - 1] = firstArray[i];
-                    }
+                    newArray[i + shortArray.Length] = longArray[i];
+                }
 
-                    else
-                    {
-                        newArray[i + secondArray.Length] = firstArray[i];
-                    }
+                else if (shortArray[i] > longArray[i] || shortArray[i] == longArray[i])
+                {
+                    newArray[i * 2] = longArray[i];
+                    newArray[i * 2 + 1] = shortArray[i];
                 }
 
                 else
                 {
-                    if (firstArray[i] > secondArray[i] || firstArray[i] == secondArray[i])
-                    {
-                        newArray[i * 2] = secondArray[i];
-                        newArray[i * 2 + 1] = firstArray[i];
-                    }
-
-                    else
-                    {
-                        newArray[i * 2] = firstArray[i];
-                        newArray[i * 2 + 1] = secondArray[i];
-                    }
+                    newArray[i * 2] = shortArray[i];
+                    newArray[i * 2 + 1] = longArray[i];
                 }
+                
             }
 
             return newArray;
