@@ -27,30 +27,30 @@ namespace FirstTask
                 shortArray = firstArray;
             }
 
-            for (int i = 0; i < longArray.Length; i++)
+            for (int i = 1; i <= longArray.Length; i++)
             {
 
-                if (newArray[i + shortArray.Length - 1] > longArray[i] && i >= shortArray.Length)
+                if (newArray[i + shortArray.Length - 2] > longArray[i - 1] && i > shortArray.Length)
                 {
-                    newArray[i + shortArray.Length] = newArray[i + shortArray.Length - 1];
-                    newArray[i + shortArray.Length - 1] = longArray[i];
+                    newArray[i + shortArray.Length - 1] = newArray[i + shortArray.Length - 2];
+                    newArray[i + shortArray.Length - 2] = longArray[i - 1];
                 }
 
-                else if (i >= shortArray.Length)
+                else if (i > shortArray.Length)
                 {
-                    newArray[i + shortArray.Length] = longArray[i];
+                    newArray[i + shortArray.Length - 1] = longArray[i - 1];
                 }
 
-                else if (shortArray[i] > longArray[i] || shortArray[i] == longArray[i])
+                else if (shortArray[i - 1] > longArray[i - 1] || shortArray[i - 1] == longArray[i - 1])
                 {
-                    newArray[i * 2] = longArray[i];
-                    newArray[i * 2 + 1] = shortArray[i];
+                    newArray[(i - 1) * 2] = longArray[i - 1];
+                    newArray[(i - 1) * 2 + 1] = shortArray[i - 1];
                 }
 
                 else
                 {
-                    newArray[i * 2] = shortArray[i];
-                    newArray[i * 2 + 1] = longArray[i];
+                    newArray[(i - 1) * 2] = shortArray[i - 1];
+                    newArray[(i - 1) * 2 + 1] = longArray[i - 1];
                 }
                 
             }
