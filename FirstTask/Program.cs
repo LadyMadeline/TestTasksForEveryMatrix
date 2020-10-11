@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,56 +13,89 @@ namespace FirstTask
         {
             int newArrayLength = firstArray.Length + secondArray.Length;
             int[] newArray = new int[newArrayLength];
-            int[] longArray;
-            int[] shortArray;
-            
-            if (firstArray.Length >= secondArray.Length)
-            {
-                longArray = firstArray;
-                shortArray = secondArray;
-            }
+            int FAIndex = 0;
+            int SAIndex = 0;
 
-            else
+            for (int i = 0; i < newArrayLength; i++)
             {
-                longArray = secondArray;
-                shortArray = firstArray;
-            }
-
-            for (int i = 0; i < longArray.Length; i++)
-            {
-
-                if (newArray[i + shortArray.Length - 1] > longArray[i] && i >= shortArray.Length)
+                if (FAIndex >= firstArray.Length)
                 {
-                    newArray[i + shortArray.Length] = newArray[i + shortArray.Length - 1];
-                    newArray[i + shortArray.Length - 1] = longArray[i];
+                    newArray[i] = secondArray[SAIndex];
+                    SAIndex++;
                 }
 
-                else if (i >= shortArray.Length)
+                else if (SAIndex >= secondArray.Length)
                 {
-                    newArray[i + shortArray.Length] = longArray[i];
-                }
-
-                else if (shortArray[i] > longArray[i] || shortArray[i] == longArray[i])
-                {
-                    newArray[i * 2] = longArray[i];
-                    newArray[i * 2 + 1] = shortArray[i];
-                }
-
-                else
-                {
-                    newArray[i * 2] = shortArray[i];
-                    newArray[i * 2 + 1] = longArray[i];
+                    newArray[i] = firstArray[FAIndex];
+                    FAIndex++;
                 }
                 
+                else if (firstArray[FAIndex] > secondArray[SAIndex] || firstArray[FAIndex] == secondArray[SAIndex])
+                {
+                    newArray[i] = secondArray[SAIndex];
+                    SAIndex++;
+                }
+
+                else if (firstArray[FAIndex] < secondArray[SAIndex])
+                {
+                    newArray[i] = firstArray[FAIndex];
+                    FAIndex++;
+                }
             }
 
             return newArray;
         }
 
+        static bool IsValidArrayCombineAndSort(int amountOfTrials)
+        {
+            Random randNum = new Random();
+            try
+            {
+                for (int j = 0; j <= amountOfTrials; j++)
+                {
+                    int lenOfFirstTestArray = randNum.Next(1, 100);
+                    int[] test1 = Enumerable
+                        .Repeat(0, lenOfFirstTestArray)
+                        .Select(i => randNum.Next(0, 100))
+                        .ToArray();
+
+                    int lenOfSecondTestArray = randNum.Next(1, 100);
+                    int[] test2 = Enumerable
+                        .Repeat(0, lenOfSecondTestArray)
+                        .Select(i => randNum.Next(0, 100))
+                        .ToArray();
+
+                    Array.Sort(test1);
+                    Array.Sort(test2);
+                    var trialValue = ArrayCombineAndSort(test1, test2);
+
+                    var expectedValue = new int[test1.Length + test2.Length];
+                    test1.CopyTo(expectedValue, 0);
+                    test2.CopyTo(expectedValue, test1.Length);
+                    Array.Sort(expectedValue);
+
+                    for (int i = 0; i < trialValue.Length; i++)
+                    {
+                        if (expectedValue[i] != trialValue[i])
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw ex;
+            }
+        }
 
         static void Main(string[] args)
         {
-            ArrayCombineAndSort(new int[] { 2, 5, 6, 8, 12, 42, 54 }, new int[] { 2, 4, 8, 34 });
+            var resultOfValidation = IsValidArrayCombineAndSort(10000);
+            Console.WriteLine($"Is valid method?! {resultOfValidation}");
+            Console.ReadKey();
         }
     }
 }
