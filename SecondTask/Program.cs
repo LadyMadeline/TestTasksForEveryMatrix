@@ -28,7 +28,17 @@ namespace SecondTask
         
         static void Main(string[] args)
         {
+            int[] array101 = new int[101];
 
+            for (int i = 0; i < array101.Length; i++)
+            {
+                array101[i] = i + 1;
+            }
+
+            array101[100] = 58;
+            int result = FindExtraNumber(array101);
+            Console.WriteLine(result);
+            Console.ReadKey();
         }
     }
 }
